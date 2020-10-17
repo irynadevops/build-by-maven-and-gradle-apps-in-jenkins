@@ -1,2 +1,0 @@
-com/test/Test.java
- com.test.Test
