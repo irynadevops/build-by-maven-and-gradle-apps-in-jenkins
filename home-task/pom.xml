@@ -3,7 +3,7 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.mtn.training</groupId>
-    <artifactId>izaitsava</artifactId>
+    <artifactId>hello</artifactId>
     <version>1.0</version>
     
     <!-- Output to jar format >
@@ -13,6 +13,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <build.number>1</build.number>
         <commons-collections4.version>4.4</commons-collections4.version>
         <jdk.version>1.8</jdk.version>
         <junit.version>4.13.1</junit.version>
@@ -50,6 +51,7 @@
      </dependencies>
 
      <build>
+         <finalName>${artifactId}-${build.number}</finalName>
          <sourceDirectory>src/main</sourceDirectory>
          <outputDirectory>target/classes</outputDirectory>
          <resources>
