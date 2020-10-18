@@ -3,17 +3,26 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.mtn.training</groupId>
-    <artifactId>simple-sample</artifactId>
+    <artifactId>hello</artifactId>
     <version>1.0</version>
-    <packaging>jar</packaging>
-    
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <build.number>1</build.number>
+        <commons-collections4.version>4.4</commons-collections4.version>
+        <jdk.version>1.8</jdk.version>
         <junit.version>4.13.1</junit.version>
+        <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
     </properties>
-
+    
      <dependencies>
+         <dependency>
+             <groupId>org.apache.commons</groupId>
+             <artifactId>commons-collections4</artifactId>
+             <version>${commons-collections4.version}</version>
+         </dependency>
+
          <dependency>
              <groupId>junit</groupId>
              <artifactId>junit</artifactId>
@@ -23,8 +32,20 @@
      </dependencies>
 
      <build>
+         <finalName>${project.artifactId}-${build.number}</finalName>
+
          <plugins>
-              <plugin>
+             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-compiler-plugin</artifactId>
+                 <version>3.8.1</version>
+                 <configuration>
+                     <source>${jdk.version}</source>
+                     <target>${jdk.version}</target>
+                 </configuration>
+             </plugin>
+
+             <plugin>
                  <groupId>org.apache.maven.plugins</groupId>
                  <artifactId>maven-jar-plugin</artifactId>
                  <version>${maven-jar-plugin.version}</version>
@@ -43,6 +64,25 @@
                          </manifest>
                      </archive>
                  </configuration>
+             </plugin>
+
+             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-dependency-plugin</artifactId>
+                 <version>${maven-dependency-plugin.version}</version>
+                 <executions>
+                     <execution>
+                         <id>copy-dependencies</id>
+                         <phase>compile</phase>
+                         <goals>
+                             <goal>copy-dependencies</goal>
+                         </goals>
+                         <configuration>
+                             <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/lib</outputDirectory>
+                             <includeScope>system</includeScope>
+                         </configuration>
+                     </execution>
+                 </executions>
              </plugin>
          </plugins>
      </build>
