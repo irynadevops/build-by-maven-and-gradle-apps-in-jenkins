@@ -8,10 +8,17 @@ plugins {
     id 'application'
 }
 
+compileJava {
+    options.encoding = 'UTF-8'
+    options.incremental = true
+    options.fork = true
+    options.failOnError = false
+}
+
 jar {
   manifest {
     attributes(
-      'Class-Path': configurations.runtime.collect{it.toURI().toString()}.join(' '),
+      'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
       'Main-Class': 'com.test.Test'
     )
   }
@@ -42,8 +49,13 @@ publishing {
     }
 }
 
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
+
+tasks.withType(Test) {
+    jvmArgs += "--enable-preview"
+}
+
+tasks.withType(JavaExec) {
+    jvmArgs += "--enable-preview"
 }
 
 task hello (dependsOn: 'test-custom'){
@@ -54,8 +66,8 @@ task hello (dependsOn: 'test-custom'){
 
 task 'test-custom' (dependsOn: 'build-custom') {
     if (tasks.compileJava.didWork) {
-        commandLine 'java', '-jar', jar.archiveFile.get()
-    }
+        commandLine ['java', '-jar', jar.archiveFile.get()]
+        }
 }
 
 task 'build-custom' (type: Jar) {
